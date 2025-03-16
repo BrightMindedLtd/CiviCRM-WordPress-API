@@ -33,14 +33,14 @@ class Civicrm_WP_API {
   }
 
   public function loadEntities() {
-    $this->entities['WpUsers'] = require_once('entities/users.php');
-    $this->entities['WpUsermeta'] = require_once('entities/usermeta.php');
-    $this->entities['WpOptions'] = require_once('entities/options.php');
+    $this->entities['WpUsers'] = require('entities/users.php');
+    $this->entities['WpUsermeta'] = require('entities/usermeta.php');
+    $this->entities['WpOptions'] = require('entities/options.php');
 
     if (is_plugin_active('gravityforms/gravityforms.php')) {
-      $this->entities['GfForm'] = require_once('entities/gravityforms/form.php');
-      $this->entities['GfFormMeta'] = require_once('entities/gravityforms/formmeta.php');
-      $this->entities['GfEntry'] = require_once('entities/gravityforms/entry.php');
+      $this->entities['GfForm'] = require('entities/gravityforms/form.php');
+      $this->entities['GfFormMeta'] = require('entities/gravityforms/formmeta.php');
+      $this->entities['GfEntry'] = require('entities/gravityforms/entry.php');
     }
   }
 
@@ -58,6 +58,8 @@ class Civicrm_WP_API {
   }
 
   public function modify_entity_references(&$entities) {
+    // Todo, check entities registered
+  
     $getFields = $entities['UFMatch']['getFields'];
     $entities['UFMatch']['getFields'] = function() use ($getFields) {
       $fields = $getFields();
