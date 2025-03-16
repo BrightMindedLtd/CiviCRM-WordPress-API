@@ -1,0 +1,72 @@
+<?php
+return [
+	'name' => 'WpUsers',
+	'table' => 'wp_users',
+	'class' => 'CRM_WordPress_DAO_Wp_Users',
+	'module' => false,
+	'primary_key' => ['id'],
+	'searchable' => 'secondary',
+	'getInfo' => fn() => [
+		'title' => 'WordPress User',
+		'title_plural' => 'WordPress Users',
+		'description' => 'Users from the WordPress database',
+		'icon' => 'fa-user',
+		'label_field' => 'user_login',
+	],
+	'getFields' => fn() => [
+		'id' => [
+			'title' => ts('WordPress User ID'),
+			'sql_type' => 'int unsigned',
+			'input_type' => 'Number',
+			'required' => TRUE,
+			'description' => ts('Unique WordPress User ID'),
+			'usage' => [],
+			'primary_key' => TRUE,
+			'auto_increment' => TRUE,
+		],
+		'user_login' => [
+			'title' => ts('Login'),
+			'sql_type' => 'varchar',
+			'input_type' => 'Text',
+			'required' => TRUE,
+			'description' => ts('Username'),
+			'usage' => [],
+		],
+		'user_nicename' => [
+			'title' => ts('Nicename'),
+			'sql_type' => 'varchar',
+			'input_type' => 'Text',
+			'required' => TRUE,
+			'description' => ts('Nice name (slug)'),
+			'usage' => [],
+		],
+		'user_email' => [
+			'title' => ts('Email'),
+			'sql_type' => 'varchar',
+			'input_type' => 'Email',
+			'description' => ts('Email address'),
+			'usage' => [],
+		],
+		'user_url' => [
+			'title' => ts('URL'),
+			'sql_type' => 'varchar',
+			'input_type' => 'Text',
+			'description' => ts('URL'),
+			'usage' => [],
+		],
+		'user_registered' => [
+			'title' => ts('User registered'),
+			'sql_type' => 'datetime',
+      		'input_type' => 'Select Date',
+			'description' => ts('User registered'),
+			'usage' => [],
+		],
+		'display_name' => [
+			'title' => ts('Display name'),
+			'sql_type' => 'varchar',
+			'input_type' => 'Text',
+			'description' => ts('Display name'),
+			'usage' => [],
+		],
+	]
+];
