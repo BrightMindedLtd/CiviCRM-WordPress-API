@@ -24,29 +24,39 @@ class Civicrm_WP_API {
 
   public function load_dependencies() {
     require_once __DIR__ . '/includes/class-wp-api-entity.php';
+
+    require_once __DIR__ . '/includes/dao/class-dao-wp-comments.php';
     require_once __DIR__ . '/includes/dao/class-dao-wp-users.php';
     require_once __DIR__ . '/includes/dao/class-dao-wp-usermeta.php';
     require_once __DIR__ . '/includes/dao/class-dao-wp-options.php';
+    require_once __DIR__ . '/includes/dao/class-dao-wp-posts.php';
+    require_once __DIR__ . '/includes/dao/class-dao-wp-postmeta.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfform.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfformmeta.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfentry.php';
   }
 
   public function loadEntities() {
+    $this->entities['WpComments'] = require('entities/comments.php');
     $this->entities['WpUsers'] = require('entities/users.php');
     $this->entities['WpUsermeta'] = require('entities/usermeta.php');
     $this->entities['WpOptions'] = require('entities/options.php');
+    $this->entities['WpPosts'] = require('entities/posts.php');
+    $this->entities['WpPostmeta'] = require('entities/postmeta.php');
 
     if (is_plugin_active('gravityforms/gravityforms.php')) {
       $this->entities['GfForm'] = require('entities/gravityforms/form.php');
       $this->entities['GfFormMeta'] = require('entities/gravityforms/formmeta.php');
       $this->entities['GfEntry'] = require('entities/gravityforms/entry.php');
     }
+
+    if (is_plugin_active('woocommerce/woocommerce.php')) {
+      $this->entities['WcOrders'] = require('entities/woocommerce/orders.php');
+    }
   }
 
   public function register_civi_events() {
     Civi::dispatcher()->addListener('civi.api4.entityTypes', [$this, 'register_api4_entity_types']);
-    Civi::dispatcher()->addListener('civi.api4.generatedSql', [$this, 'add_sql_database_names']);
   }
 
   public function register_entity_types(&$entities) {
@@ -73,63 +83,29 @@ class Civicrm_WP_API {
   }
 
   public function register_api4_entity_types($event) {
+    global $wpdb;
+    $dbname = $wpdb->dbname;
     $entities = $event->entities;
 
     foreach ($this->entities as $entityName => $entity) {
       $info = isset($entity['getInfo']) ? $entity['getInfo']() : null;
-      if ($info) {
-        $entities[$entityName] = [
-          ...$info,
-          'searchable' => $entity['searchable'] ?? '',
-          'name' => $entityName,
-          'primary_key' => $entity['primary_key'] ?? '',
-          'table_name' => $entity['table'] ?? '' ,
-          'dao' => $entity['class'] ?? '',
-          'class' => 'CRM_WordPress_Api_Entity',
-          'class_args' => [$entity['name']],
-          'type' => [
-            'DAOEntity'
-          ]
-        ];
-      } else {
-        $entities[$entityName] = [
-          'name' => $entityName,
-          'title' => $entity['title'] ?? '',
-          'title_plural' => $entity['title_plural'] ?? $entity['title'],
-          'searchable' => $entity['searchable'] ?? '',
-          'primary_key' => $entity['primary_key'] ?? '',
-          'table_name' => $entity['table'] ?? '' ,
-          'dao' => $entity['class'] ?? '',
-          'class' => 'CRM_WordPress_Api_Entity',
-          'class_args' => [$entity['name']],
-          'type' => [
-            'DAOEntity'
-          ]
-        ];
-      }
+      
+      $entities[$entityName] = [
+        ...$info,
+        'searchable' => $entity['searchable'] ?? '',
+        'name' => $entityName,
+        'primary_key' => $entity['primary_key'] ?? '',
+        'table_name' => str_replace('wp_', $wpdb->prefix, $entity['table'] ?? ''),
+        'database_name' => $dbname,
+        'dao' => $entity['class'] ?? '',
+        'class' => 'CRM_WordPress_Api_Entity',
+        'class_args' => [$entity['name']],
+        'type' => [
+          'DAOEntity'
+        ]
+      ];
     }
     $event->entities = $entities;
-  }
-
-  public function add_sql_database_names($event) {
-    global $wpdb;
-    $dbname = $wpdb->dbname;
-    $sql = $event->sql;
-
-    foreach ($this->entities as $entity) {
-      $sql = str_replace(
-        sprintf('FROM %s ', $entity['table']),
-        sprintf('FROM %s.%s ', $dbname, $entity['table']),
-        $sql
-      );
-      $sql = str_replace(
-        sprintf('(`%s`', $entity['table']),
-        sprintf('(%s.`%s`', $dbname, $entity['table']),
-        $sql
-      );
-    }
-
-    $event->sql = $sql;
   }
 }
 new Civicrm_WP_API();
