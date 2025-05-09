@@ -2,7 +2,7 @@
 return [
 	'name' => 'WpComments',
 	'table' => 'wp_comments',
-	'class' => 'CRM_WordPress_DAO_Wp_comments',
+	'class' => 'CRM_WordPress_DAO_Wp_Comments',
 	'module' => false,
 	'primary_key' => ['comment_id'],
 	'searchable' => 'secondary',
