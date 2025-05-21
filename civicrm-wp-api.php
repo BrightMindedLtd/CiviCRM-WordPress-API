@@ -35,6 +35,7 @@ class Civicrm_WP_API {
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfformmeta.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfentry.php';
     require_once __DIR__ . '/includes/dao/woocommerce/class-dao-wc-orders.php';
+    require_once __DIR__ . '/includes/dao/woocommerce/class-dao-wc-orderitems.php';
   }
 
   public function loadEntities() {
@@ -53,6 +54,7 @@ class Civicrm_WP_API {
 
     if (is_plugin_active('woocommerce/woocommerce.php')) {
       $this->entities['WcOrders'] = require('entities/woocommerce/orders.php');
+      $this->entities['WcOrderItems'] = require('entities/woocommerce/orderitems.php');
     }
   }
 
@@ -70,7 +72,7 @@ class Civicrm_WP_API {
 
   public function modify_entity_references(&$entities) {
     // Todo, check entities registered
-  
+
     $getFields = $entities['UFMatch']['getFields'];
     $entities['UFMatch']['getFields'] = function() use ($getFields) {
       $fields = $getFields();

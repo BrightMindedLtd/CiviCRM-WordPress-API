@@ -13,7 +13,7 @@ return [
 	],
 	'getFields' => fn() => [
 		'id' => [
-            'title' => ts('ID'),
+            'title' => ts('Order ID'),
             'sql_type' => 'int(20) unsigned',
             'input_type' => 'Number',
             'required' => TRUE,
