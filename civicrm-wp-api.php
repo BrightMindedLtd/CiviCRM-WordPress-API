@@ -34,6 +34,7 @@ class Civicrm_WP_API {
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfform.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfformmeta.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfentry.php';
+    require_once __DIR__ . '/includes/dao/woocommerce/class-dao-wc-orders.php';
   }
 
   public function loadEntities() {
