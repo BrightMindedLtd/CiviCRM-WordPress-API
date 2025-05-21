@@ -1,16 +1,15 @@
 {
-    "name": "brightminded/civicrm-wordpress-api",
-    "type": "wordpress-plugin",
-    "authors": [
-        {
-            "name": "Bradley Taylor",
-            "email": "bradley.taylor@brightminded.com"
-        }
-        {
-            "name": "BrightMinded Ltd",
-            "email": "hello@brightminded.com"
-        }
-    ],
-    "require": {
-	  }
+  "name": "brightminded/civicrm-wordpress-api",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "Bradley Taylor",
+      "email": "bradley.taylor@brightminded.com"
+    },
+    {
+      "name": "BrightMinded Ltd",
+      "email": "hello@brightminded.com"
+    }
+  ],
+  "require": {}
 }
