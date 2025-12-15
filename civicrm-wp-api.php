@@ -39,6 +39,10 @@ class Civicrm_WP_API {
   }
 
   public function loadEntities() {
+    if (!empty($this->entities)) {
+      return;
+    }
+
     $this->entities['WpComments'] = require('entities/comments.php');
     $this->entities['WpUsers'] = require('entities/users.php');
     $this->entities['WpUsermeta'] = require('entities/usermeta.php');
@@ -60,6 +64,36 @@ class Civicrm_WP_API {
 
   public function register_civi_events() {
     Civi::dispatcher()->addListener('civi.api4.entityTypes', [$this, 'register_api4_entity_types']);
+    $this->maybe_clear_cache();
+  }
+
+  /**
+   * If code calls \Civi::service('action_object_provider')->getEntities() before our listener is registered,
+   * the cache can become stale.
+   *
+   * Check if the cache exists, and is missing our entities,
+   * and if so clear it.
+   *
+   * @return void
+   */
+  protected function maybe_clear_cache() {
+    $cache = \Civi::cache('metadata');
+    $entities = $cache->get('api4.entities.info', []);
+
+    if (empty($entities)) {
+      // Empty cache, nothing to do
+      return;
+    }
+
+    $requiredKeys = array_keys($this->entities);
+    $missingKeys = array_filter($requiredKeys, function($key) use ($entities) {
+      return !array_key_exists($key, $entities);
+    });
+
+    if (!empty($missingKeys)) {
+      Civi::cache('metadata')->delete('api4.entities.info');
+      Civi::cache('metadata')->delete('api4.schema.map');
+    }
   }
 
   public function register_entity_types(&$entities) {
@@ -92,7 +126,7 @@ class Civicrm_WP_API {
 
     foreach ($this->entities as $entityName => $entity) {
       $info = isset($entity['getInfo']) ? $entity['getInfo']() : null;
-      
+
       $entities[$entityName] = [
         ...$info,
         'searchable' => $entity['searchable'] ?? '',
