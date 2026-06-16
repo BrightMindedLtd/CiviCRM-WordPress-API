@@ -31,11 +31,25 @@ class Civicrm_WP_API {
     require_once __DIR__ . '/includes/dao/class-dao-wp-options.php';
     require_once __DIR__ . '/includes/dao/class-dao-wp-posts.php';
     require_once __DIR__ . '/includes/dao/class-dao-wp-postmeta.php';
+
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfform.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfformmeta.php';
     require_once __DIR__ . '/includes/dao/gravityforms/class-dao-wp-gfentry.php';
+
     require_once __DIR__ . '/includes/dao/woocommerce/class-dao-wc-orders.php';
     require_once __DIR__ . '/includes/dao/woocommerce/class-dao-wc-orderitems.php';
+
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizcategory.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizmaster.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizform.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizprerequisite.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizquestion.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizstatistic.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quizstatisticref.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quiztemplate.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-quiztoplist.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-useractivity.php';
+    require_once __DIR__ . '/includes/dao/learndash/class-dao-learndash-useractivitymeta.php';
   }
 
   public function loadEntities() {
@@ -59,6 +73,20 @@ class Civicrm_WP_API {
     if (is_plugin_active('woocommerce/woocommerce.php')) {
       $this->entities['WcOrders'] = require('entities/woocommerce/orders.php');
       $this->entities['WcOrderItems'] = require('entities/woocommerce/orderitems.php');
+    }
+
+    if (is_plugin_active('sfwd-lms/sfwd_lms.php')) {
+      $this->entities['LearndashQuizCategory'] = require('entities/learndash/quizcategory.php');
+      $this->entities['LearndashQuizMaster'] = require('entities/learndash/quizmaster.php');
+      $this->entities['LearndashQuizForm'] = require('entities/learndash/quizform.php');
+      $this->entities['LearndashQuizPrerequisite'] = require('entities/learndash/quizprerequisite.php');
+      $this->entities['LearndashQuizQuestion'] = require('entities/learndash/quizquestion.php');
+      $this->entities['LearndashQuizStatistic'] = require('entities/learndash/quizstatistic.php');
+      $this->entities['LearndashQuizStatisticRef'] = require('entities/learndash/quizstatisticref.php');
+      $this->entities['LearndashQuizTemplate'] = require('entities/learndash/quiztemplate.php');
+      $this->entities['LearndashQuizToplist'] = require('entities/learndash/quiztoplist.php');
+      $this->entities['LearndashUserActivity'] = require('entities/learndash/useractivity.php');
+      $this->entities['LearndashUserActivityMeta'] = require('entities/learndash/useractivitymeta.php');
     }
   }
 

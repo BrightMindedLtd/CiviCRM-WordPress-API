@@ -1,0 +1,50 @@
+<?php
+return [
+	'name' => 'LearndashQuizTemplate',
+	'table' => 'wp_learndash_pro_quiz_template',
+	'class' => 'CRM_WordPress_DAO_Learndash_QuizTemplate',
+	'module' => false,
+	'primary_key' => ['template_id'],
+	'searchable' => 'secondary',
+	'getInfo' => fn() => [
+        'title' => 'Learndash Quiz Template',
+        'title_plural' => 'Learndash Quiz Templates',
+        'description' => 'Learndash Quiz Template',
+    ],
+	'getFields' => fn() => [
+        'template_id' => [
+            'title' => ts('Template ID'),
+            'sql_type' => 'int',
+            'input_type' => 'Number',
+            'required' => TRUE,
+            'description' => ts('Database ID for this row'),
+            'usage' => [],
+            'primary_key' => TRUE,
+            'auto_increment' => TRUE,
+        ],
+        'name' => [
+            'title' => ts('Name'),
+            'sql_type' => 'varchar(200)',
+            'input_type' => 'Text',
+            'required' => TRUE,
+            'description' => ts('Name of the template'),
+            'usage' => [],
+        ],
+        'type' => [
+            'title' => ts('Type'),
+            'sql_type' => 'tinyint(1) unsigned',
+            'input_type' => 'Number',
+            'required' => TRUE,
+            'description' => ts('Type of the template'),
+            'usage' => [],
+        ],
+        'data' => [
+            'title' => ts('Data'),
+            'sql_type' => 'text',
+            'input_type' => 'TextArea',
+            'required' => TRUE,
+            'description' => ts('Serialised template data'),
+            'usage' => [],
+        ],
+    ],
+];
