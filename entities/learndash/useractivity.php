@@ -47,12 +47,25 @@ return [
             ],
         ],
         'course_id' => [
-            'title' => ts('Course ID'),
+            'title' => ts('Course'),
             'sql_type' => 'bigint unsigned',
             'input_type' => 'Select',
             'required' => TRUE,
             'description' => ts('The ID of the course this activity is associated with'),
             'usage' => [],
+            'pseudoconstant' => [
+                'callback' => fn() => wp_list_pluck(
+                    get_posts([
+                        'post_type'   => 'sfwd-courses',
+                        'post_status' => ['publish', 'private', 'draft'],
+                        'numberposts' => -1,
+                        'orderby'     => 'title',
+                        'order'       => 'ASC',
+                    ]),
+                    'post_title',
+                    'ID'
+                ),
+            ],
             'entity_reference' => [
                 'entity' => 'WpPosts',
                 'key' => 'id'
