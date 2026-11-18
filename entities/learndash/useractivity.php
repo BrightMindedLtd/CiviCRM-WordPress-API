@@ -49,23 +49,13 @@ return [
         'course_id' => [
             'title' => ts('Course'),
             'sql_type' => 'bigint unsigned',
-            'input_type' => 'Select',
+            'input_type' => 'EntityRef',
+            'input_attrs' => [
+                'filter' => ['post_type' => 'sfwd-courses'],
+            ],
             'required' => TRUE,
             'description' => ts('The ID of the course this activity is associated with'),
             'usage' => [],
-            'pseudoconstant' => [
-                'callback' => function () {
-                    global $wpdb;
-                    $rows = $wpdb->get_results(
-                        "SELECT ID, post_title FROM {$wpdb->posts}
-                         WHERE post_type = 'sfwd-courses'
-                           AND post_status IN ('publish', 'private', 'draft')
-                         ORDER BY post_title",
-                        ARRAY_A
-                    );
-                    return array_column($rows, 'post_title', 'ID');
-                },
-            ],
             'entity_reference' => [
                 'entity' => 'WpPosts',
                 'key' => 'id'
