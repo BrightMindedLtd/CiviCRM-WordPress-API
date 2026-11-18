@@ -47,9 +47,13 @@ return [
             ],
         ],
         'course_id' => [
-            'title' => ts('Course ID'),
+            'title' => ts('Course'),
             'sql_type' => 'bigint unsigned',
-            'input_type' => 'Select',
+            'input_type' => 'EntityRef',
+            'input_attrs' => [
+                'filter' => ['post_type' => 'sfwd-courses'],
+                'placeholder' => ts('Select a course'),
+            ],
             'required' => TRUE,
             'description' => ts('The ID of the course this activity is associated with'),
             'usage' => [],

@@ -102,7 +102,6 @@ class CRM_WordPress_DAO extends CRM_Core_DAO
 	 */
 	public static function &fields()
 	{
-		echo 'fields';die();
 		$fields = [];
 		foreach (static::getSchemaFields() as $field) {
 			$key = $field['uniqueName'] ?? $field['name'];
