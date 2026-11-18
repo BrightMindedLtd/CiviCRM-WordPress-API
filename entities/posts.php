@@ -10,6 +10,7 @@ return [
         'title' => 'WordPress Posts',
         'title_plural' => 'WordPress Posts',
         'description' => 'WordPress Posts',
+        'label_field' => 'post_title',
     ],
 	'getFields' => fn() => [
         'id' => [
