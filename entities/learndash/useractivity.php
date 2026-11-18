@@ -52,6 +52,7 @@ return [
             'input_type' => 'EntityRef',
             'input_attrs' => [
                 'filter' => ['post_type' => 'sfwd-courses'],
+                'placeholder' => ts('Select a course'),
             ],
             'required' => TRUE,
             'description' => ts('The ID of the course this activity is associated with'),
