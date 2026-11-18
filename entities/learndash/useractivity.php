@@ -54,17 +54,17 @@ return [
             'description' => ts('The ID of the course this activity is associated with'),
             'usage' => [],
             'pseudoconstant' => [
-                'callback' => fn() => wp_list_pluck(
-                    get_posts([
-                        'post_type'   => 'sfwd-courses',
-                        'post_status' => ['publish', 'private', 'draft'],
-                        'numberposts' => -1,
-                        'orderby'     => 'title',
-                        'order'       => 'ASC',
-                    ]),
-                    'post_title',
-                    'ID'
-                ),
+                'callback' => function () {
+                    global $wpdb;
+                    $rows = $wpdb->get_results(
+                        "SELECT ID, post_title FROM {$wpdb->posts}
+                         WHERE post_type = 'sfwd-courses'
+                           AND post_status IN ('publish', 'private', 'draft')
+                         ORDER BY post_title",
+                        ARRAY_A
+                    );
+                    return array_column($rows, 'post_title', 'ID');
+                },
             ],
             'entity_reference' => [
                 'entity' => 'WpPosts',
